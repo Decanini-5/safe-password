@@ -1,10 +1,26 @@
 <template>
   <div class="home">
     <img src="..\safe-password-logo.png" alt="sp_logo">
+    <div class="text">Enter a length for your password.</div>
+    <div class="input-container">
+      <button class="input-btn minus"
+      onclick="this.parentNode.querySelector('.input').stepDown()">
+      <div class="symbol-minus">&#129171;</div></button>
+      <button class="input-btn plus"
+      onclick="this.parentNode.querySelector('.input').stepUp()">
+      <div class="symbol-plus">&#129169;</div></button>
+      <input class="input" min="6" value="6" id="pwL" type="number">
+      <span class="tt-rules">Your password should be at least 6 characters long.</span>
+      <span class="tt-error">Please enter a length greater than 6.</span>
+    </div>
     <div class="text">Press button to generate password.</div>
     <button class="btn" @click="generatePassword">GENERATE PASSWORD</button>
     <div class="text">My password is:</div>
-    <div class="text" id="pswd">{{ password }}</div>
+    <div class="text" id="pswd">
+      <input class="input-pswd" type="text" id="input-pswd">
+      <button class="copy" @click="copyToClipboard">
+        <img src="..\copy_icon.png" alt="Copy"></button>
+    </div>
   </div>
 </template>
 
@@ -19,59 +35,11 @@ export default {
   methods: {
     generatePassword() {
       this.password = generatePasswordFromFile();
+      document.getElementById('input-pswd').value = this.password;
+    },
+    copyToClipboard() {
+      navigator.clipboard.writeText(this.password);
     },
   },
 };
 </script>
-<style>
-body {
-  background-color: rgb(25, 25, 25);
-}
-.home {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  background: rgb(26, 50, 95);
-  border-radius: 8px;
-  border: 0;
-  height: 34.8vw;
-  min-height: 430px;
-  width: 23vw;
-  min-width: 285px;
-}
-.btn {
-  background: rgb(10, 10, 10);
-  color: #fff;
-  width: 65%;
-  border-radius: 5px;
-  padding: 0.7rem;
-  border: none;
-  margin-top: 7%;
-  margin-bottom: 10%;
-  font-family: Montserrat, sans-serif;
-  font-size: calc(12px + 0.1vw);
-  cursor: pointer;
-}
-.text {
-  font-family: 'Work Sans', sans-serif;
-  font-size: calc(13px + 0.11vw);
-  padding: 0 5%;
-  color: rgb(178, 184, 185);
-  margin-left: 5px;
-  cursor: default;
-}
-img {
-  width: 60%;
-  margin: 10% 0 20% 0;
-}
-#pswd {
-  font-family: Montserrat, sans-serif;
-  font-weight: bold;
-  font-size: 120%;
-  margin-top: 5%;
-  margin-bottom: 2%;
-  cursor: text;
-}
-</style>
